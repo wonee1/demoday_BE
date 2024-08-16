@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
     "name": "Sample Group",
-    "password": "securepassword",
+    "password": "12345",
     "imageUrl": "http://example.com/image.jpg",
     "isPublic": true,
     "introduction": "This is a sample group."
@@ -19,14 +19,38 @@ GET http://localhost:3000/api/groups
 ###
 //그룹 수정 
 
-PUT http://localhost:3000/api/groups/1
+PUT http://localhost:3000/api/groups/4
 Content-Type: application/json
 
 {
     "name": "Updated Group Name",
-    "password": "expectedPassword",
+    "password": "12345",
     "imageUrl": "http://example.com/newimage.jpg",
     "isPublic": true,
     "introduction": "Updated introduction."
 }
 
+
+
+###
+// 그룹 삭제 
+
+DELETE http://localhost:3000/api/groups/4
+
+{
+  "password": "12345"
+}
+
+###
+//그룹 상세 정보 조회 
+GET http://localhost:3000/api/groups/1
+
+
+###
+//그룹 공감하기 
+POST http://localhost:3000/api/groups/1/like
+
+
+###
+//그룹 공개 여부 확인 
+GET http://localhost:3000/api/groups/1/is-public
