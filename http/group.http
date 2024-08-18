@@ -19,7 +19,7 @@ GET http://localhost:3000/api/groups
 ###
 //그룹 수정 
 
-PUT http://localhost:3000/api/groups/4
+PUT http://localhost:5000/api/groups/4
 Content-Type: application/json
 
 {
@@ -35,11 +35,14 @@ Content-Type: application/json
 ###
 // 그룹 삭제 
 
-DELETE http://localhost:3000/api/groups/4
+DELETE http://localhost:5000/api/groups/4
+Content-Type: application/json
 
 {
-  "password": "12345"
+    "password": "12345"
 }
+
+
 
 ###
 //그룹 상세 정보 조회 
