@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createGroup, getGroups,updateGroup,deleteGroup, getGroupDetails,likeGroup,getGroupPublicStatus } = require('../controllers/groupController'); // 경로가 올바른지 확인
+const { createGroup, getGroups,updateGroup,deleteGroup, getGroupDetails,likeGroup,getGroupPublicStatus,verifyGroupPassword } = require('../controllers/groupController'); // 경로가 올바른지 확인
 
 // POST /api/groups - 그룹 등록
 router.post('/', createGroup);
@@ -23,6 +23,8 @@ router.post('/:groupId/like', likeGroup);
 //그룹 공개 여부 확인
 router.get('/:groupId/is-public', getGroupPublicStatus);
 
+// POST /api/groups/:groupId/verify-password - 그룹 비밀번호 확인
+router.post('/:groupId/verify-password', verifyGroupPassword);
 
 
 module.exports = router;

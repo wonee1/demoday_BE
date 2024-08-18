@@ -37,6 +37,7 @@ const createGroup = async (req, res) => {
     }
 };
 
+//그룹 목록 조회 
 const getGroups = async (req, res) => {
     const { page = 1, pageSize = 10, sortBy = 'latest', keyword = '', isPublic = 'true' } = req.query;
     const pageNumber = parseInt(page, 10) > 0 ? parseInt(page, 10) : 1;
@@ -289,6 +290,40 @@ const getGroupPublicStatus = async (req, res) => {
     }
 };
 
+//그룹 조회 권한 확인
+const verifyGroupPassword = async (req, res) => {
+    const { groupId } = req.params;
+    const { password } = req.body;
+
+    // 요청 본문 유효성 검사
+    if (!password) {
+        return res.status(400).json({ message: '비밀번호를 제공해 주세요' });
+    }
+
+    try {
+        // 그룹 존재 확인
+        const group = await prisma.group.findUnique({
+            where: { id: parseInt(groupId) },
+        });
+
+        if (!group) {
+            return res.status(404).json({ message: '존재하지 않습니다' });
+        }
+
+        // 비밀번호 검증
+        const isPasswordValid = await bcrypt.compare(password, group.password);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: '비밀번호가 틀렸습니다' });
+        }
+
+        res.status(200).json({ message: '비밀번호가 확인되었습니다' });
+    } catch (error) {
+        console.error('Error verifying group password:', error);
+        res.status(500).json({ message: '서버 오류입니다' });
+    }
+};
+
 module.exports = {
     createGroup,
     getGroups,
@@ -297,4 +332,5 @@ module.exports = {
     getGroupDetails,
     likeGroup,
     getGroupPublicStatus,
+    verifyGroupPassword,
 };

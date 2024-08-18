@@ -50,6 +50,17 @@ GET http://localhost:5000/api/groups/1
 
 
 ###
+//그룹 조회 권한 확인
+
+POST http://localhost:5000/api/groups/5/verify-password
+Content-Type: application/json
+
+{
+    "password": "12345"  
+}
+
+
+###
 //그룹 공감하기 
 POST http://localhost:5000/api/groups/1/like
 
