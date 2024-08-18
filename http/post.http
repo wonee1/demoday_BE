@@ -1,0 +1,16 @@
+###
+POST http://localhost:5000/api/groups/5/posts
+Content-Type: application/json
+
+{
+	"nickname": "string",
+	"title": "string",
+	"content": "string",
+	"postPassword": "12345",
+	"groupPassword": "1234",
+	"imageUrl": "string",
+	"tags": [ "string", "string" ],
+	"location": "string",
+	"moment": "2024-02-21",
+	"isPublic": true
+}
