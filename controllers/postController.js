@@ -342,7 +342,7 @@ const likePost = async (req, res) => {
     }
 };
 
-
+//게시글 공개 여부 확인 
 const getPostPublicStatus = async (req, res) => {
     const { postId } = req.params;
 
