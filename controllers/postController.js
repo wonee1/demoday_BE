@@ -2,6 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
 
+
 //게시글 등록 
 const createPost = async (req, res) => {
     const { groupId } = req.params;
@@ -59,6 +60,9 @@ const createPost = async (req, res) => {
                 commentCount: 0,
             }
         });
+   
+        // 배지 조건 확인
+       
 
         // 성공적으로 생성된 게시글 반환
         res.status(200).json(newPost);
@@ -334,6 +338,7 @@ const likePost = async (req, res) => {
                 likeCount: post.likeCount + 1,
             },
         });
+
 
         res.status(200).json({ message: '게시글 공감하기 성공' });
     } catch (error) {

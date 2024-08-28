@@ -141,6 +141,7 @@ const updateGroup = async (req, res) => {
         console.error('Error updating group:', error);
         res.status(500).json({ message: '서버 오류입니다' });
     }
+  
 };
 
 //그룹 삭제 
@@ -212,13 +213,14 @@ const getGroupDetails = async (req, res) => {
             return res.status(404).json({ message: "존재하지 않습니다" });
         }
 
+
         const groupDetails = {
             id: group.id,
             name: group.name,
             imageUrl: group.imageUrl,
             isPublic: group.isPublic,
             likeCount: group.likeCount,
-            badges: group.badges.map(badge => badge.name),
+            badges: group.badges.map(badge => badge.badge_type),  // badge_type 필드를 반환
             postCount: group.posts.length,
             createdAt: group.createdAt,
             introduction: group.introduction,

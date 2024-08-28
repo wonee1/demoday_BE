@@ -52,7 +52,7 @@ Content-Type: application/json
 ###
 //게시글 상세정보 조회 
 
-GET http://localhost:5000/api/posts/2
+GET http://localhost:5000/api/posts/5
 
 
 ###
