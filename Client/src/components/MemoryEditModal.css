@@ -1,0 +1,262 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content-edit {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 700px;
+  width: 90%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  position: relative;
+  overflow: hidden;
+}
+
+.edit-page-title {
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  font-size: 1.4em;
+}
+
+.edit-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #282828; /* You can change this color to suit your design */
+}
+
+.edit-memory-form {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.edit-form-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 300px;
+}
+
+.edit-divider {
+  width: 1px;
+  background-color: #ccc;
+  margin: 0 4px;
+}
+
+.edit-label {
+  font-weight: bold;
+  font-size: 0.75em;
+  margin-bottom: 3px;
+}
+
+input[type="text"],
+input[type="file"],
+input[type="password"],
+input[type="date"],
+textarea {
+  width: 100%;
+  padding: 4px;
+  margin-top: 2px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 0.75em;
+  height: 30px;
+  color: #b8b8b8;
+}
+
+textarea {
+  height: 100px;
+  resize: none;
+  margin-bottom: 3px;
+  color: #b8b8b8;
+  border: 1px solid #dddddd;
+}
+.edit-file-input {
+  display: none;
+}
+
+.edit-form-group input[type="file"] {
+  display: none;
+}
+
+.edit-form-group .edit-image-upload {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edit-form-group .edit-image-upload button {
+  padding: 5px 5px;
+  font-size: 0.9em;
+  border: 1px solid #282828;
+  border-radius: 4px;
+  background-color: #fff;
+  width: 110px;
+  margin: auto;
+  cursor: pointer;
+  color: #282828;
+}
+
+.edit-file-input-display {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  background-color: #fff;
+  margin-right: 10px;
+  cursor: not-allowed;
+  color: #b8b8b8;
+}
+
+/* 스위치 컨테이너 스타일 */
+.edit-switch-container {
+  display: flex;
+  align-items: center; /* 수직으로 가운데 정렬 */
+  gap: 10px; /* 스위치와 라벨 사이 간격 */
+}
+
+/* 스위치 스타일 */
+.edit-switch {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 20px;
+  margin-top: 6px;
+  margin-right: 10px;
+}
+
+.edit-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.edit-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.edit-slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .edit-slider {
+  background-color: #282828;
+}
+
+input:checked + .edit-slider:before {
+  transform: translateX(14px);
+}
+
+/* 스위치 라벨 */
+.edit-switch-label {
+  font-size: 0.9em;
+  color: #282828;
+}
+
+/* submit-button 스타일 */
+.edit-submit-button {
+  background-color: #282828 !important;
+  color: #fff !important;
+  padding: 10px 20px !important;
+  border: none !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  margin: 0px auto !important;
+  display: block !important;
+  width: 400px !important;
+  text-align: center !important;
+}
+
+/* Tag Input Style */
+.edit-tags-input {
+  border: none;
+  flex-grow: 1;
+  padding: 2px;
+  min-width: 60px;
+  font-size: 0.75em;
+}
+
+.edit-tags-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.edit-tag-item {
+  display: flex;
+  align-items: center;
+  color: #8c8c8c;
+  margin-right: 3px;
+}
+
+.edit-tag-remove {
+  background: none;
+  border: none;
+  color: #b8b8b8;
+  font-size: 1.1em;
+  margin-left: -3px;
+  margin-top: 3px;
+  cursor: pointer;
+}
+
+.edit-tag-remove:hover {
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .modal-content-edit {
+    padding: 5px 8px;
+    max-width: 90%;
+    max-height: 90vh;
+  }
+
+  .edit-memory-form {
+    flex-direction: column;
+  }
+
+  .edit-form-section {
+    min-width: 100%;
+  }
+
+  .edit-divider {
+    width: 100%;
+    height: 1px;
+    margin: 8px 0;
+  }
+}

@@ -1,0 +1,47 @@
+.group-list-container {
+  column-count: 4; /* 카드가 4개의 열로 나뉘어 표시 */
+  column-gap: 20px; /* 열 사이의 간격 */
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.group-list-item {
+  break-inside: avoid; /* 열이 나뉘는 부분에서 카드가 분리되지 않도록 설정 */
+  margin-bottom: 20px; /* 카드들 사이의 간격 */
+}
+
+.load-more-button {
+  padding: 15px 0px;
+  width: 100%;
+  border: 1px solid #282828;
+  border-radius: 5px;
+  background-color: #fff;
+  font-size: 1em;
+  cursor: pointer;
+  margin: 60px auto;
+  display: block;
+  text-align: center;
+}
+
+.load-more-button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+.empty-state-container {
+  text-align: center;
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Align items in the center horizontally */
+}
+
+.no-group-icon {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 20px;
+}
+
+.create-button-wrapper {
+  margin-top: 100px; /* This might be redundant but ensures spacing */
+}

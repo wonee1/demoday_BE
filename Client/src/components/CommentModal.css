@@ -1,0 +1,73 @@
+/* src/components/CommentModal.css */
+
+.modal-overlay-comment {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content-comment {
+  background-color: white;
+  padding: 20px;
+  border-radius: 6px;
+  max-width: 300px;
+  height: 450px;
+  width: 100%;
+
+  position: relative;
+}
+
+.comment-title {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.form-group-comment {
+  margin-bottom: 20px;
+}
+
+.form-group-comment label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.form-group-comment input,
+.form-group-comment textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-group-comment textarea {
+  resize: none;
+  height: 80px;
+}
+
+.submit-button-comment {
+  display: block;
+  width: 100%;
+  height: 50px;
+  padding: 10px;
+  background-color: #282828;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 40px;
+}

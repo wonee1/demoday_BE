@@ -1,0 +1,71 @@
+.groupdelete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.groupdelete-modal-content {
+  background: white;
+  padding: 40px;
+  border-radius: 8px;
+  width: 300px !important;
+  max-width: 100%;
+  position: relative;
+}
+
+.groupdelete-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+h2 {
+  margin-top: -5px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.delete-form-group {
+  margin-bottom: 20px;
+}
+
+.delete-form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.delete-form-group input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+
+.group-delete-button {
+  width: 100%;
+  padding: 5px;
+  background-color: #282828;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.group-delete-button:hover {
+  background-color: #333;
+}

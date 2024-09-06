@@ -1,0 +1,76 @@
+###
+//게시글 등록 
+POST http://localhost:5000/api/groups/5/posts
+Content-Type: application/json
+
+{
+	"nickname": "string",
+	"title": "string",
+	"content": "string",
+	"postPassword": "1234",
+	"groupPassword": "12345",
+	"imageUrl": "string",
+	"tags": [ "string", "string" ],
+	"location": "string",
+	"moment": "2024-02-21",
+	"isPublic": true
+}
+
+###
+//게시글 목록 조회 
+
+GET http://localhost:5000/api/groups/5/posts
+
+
+###
+//게시글 수정 
+PUT http://localhost:5000/api/posts/1
+Content-Type: application/json
+
+{
+	"nickname": "string",
+	"title": "string",
+	"content": "string",
+	"postPassword": "12345",
+	"imageUrl": "string",
+	"tags": ["string", "string"],
+	"location": "string",
+	"moment": "2024-02-21",
+	"isPublic": true
+}
+
+###
+//게시글 삭제 
+DELETE http://localhost:5000/api/posts/1
+Content-Type: application/json
+
+{
+	"postPassword": "12345" 
+
+}
+
+###
+//게시글 상세정보 조회 
+
+GET http://localhost:5000/api/posts/5
+
+
+###
+//게시글 조회 권환 확인 
+POST http://localhost:5000/api/posts/2/verify-password
+Content-Type: application/json
+
+{
+	"password": "1234" 
+}
+
+
+###
+//게시글 공감
+POST http://localhost:5000/api/posts/2/like
+
+
+###
+//게시글 공개 여부 확인
+
+GET http://localhost:5000/api/posts/2/is-public

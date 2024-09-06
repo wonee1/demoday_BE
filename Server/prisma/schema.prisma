@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Group {
+  id           Int      @id @default(autoincrement())
+  name         String   @db.VarChar(255)
+  imageUrl     String   @db.VarChar(255)
+  isPublic     Boolean  @default(true)
+  password     String   @db.VarChar(255)
+  createdAt    DateTime @default(now())
+  badgeCount   Int      @default(0)
+  postCount    Int      @default(0)
+  likeCount    Int      @default(0)
+  introduction String   @db.VarChar(255)
+
+  //관계 설정
+  posts  Post[]
+  badges Badge[]
+}
+
+model Post {
+  id           Int      @id @default(autoincrement())
+  groupId      Int
+  nickname     String   @db.VarChar(255)
+  title        String   @db.VarChar(255)
+  content      String
+  imageUrl     String   @db.VarChar(255)
+  location     String   @db.VarChar(255)
+  moment       DateTime
+  isPublic     Boolean  @default(true)
+  password     String   @db.VarChar(255)
+  createdAt    DateTime @default(now())
+  likeCount    Int      @default(0)
+  commentCount Int      @default(0)
+  tags         Json  
+
+  //외래키 설정 및 관계 설정
+  group    Group     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  comments Comment[]
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  nickname  String   @db.VarChar(255)
+  content   String
+  password  String   @db.VarChar(255)
+  createdAt DateTime @default(now())
+
+  //외래키 설정 및 관계 설정
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Badge {
+  id         Int      @id @default(autoincrement())
+  groupId    Int
+  badge_type String   @db.VarChar(255)
+  createdAt  DateTime @default(now())
+
+  //외래키 설정 및 관계 설정
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+}
