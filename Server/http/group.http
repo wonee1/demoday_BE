@@ -3,11 +3,11 @@ POST http://localhost:5000/api/groups
 Content-Type: application/json
 
 {
-    "name": "Sample Group",
+    "name": "테스트",
     "password": "12345",
     "imageUrl": "http://example.com/image.jpg",
     "isPublic": true,
-    "introduction": "This is a sample group."
+    "introduction": "테스트 그룹"
 }
 
 ###

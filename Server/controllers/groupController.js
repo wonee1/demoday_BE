@@ -35,12 +35,16 @@ const createGroup = async (req, res) => {
     }
 };
 
-//그룹 목록 조회 
+// 그룹 목록 조회 
 const getGroups = async (req, res) => {
     const { page = 1, pageSize = 10, sortBy = 'latest', keyword = '', isPublic = 'true' } = req.query;
     const pageNumber = parseInt(page, 10) > 0 ? parseInt(page, 10) : 1;
     const pageSizeNumber = parseInt(pageSize, 10) > 0 ? parseInt(pageSize, 10) : 10;
     const isPublicBoolean = isPublic === 'true';
+
+    // 디버깅용 로그 추가
+    console.log('SortBy:', sortBy);
+    console.log('Page:', pageNumber, 'PageSize:', pageSizeNumber, 'Keyword:', keyword);
 
     let orderBy;
     switch (sortBy) {
@@ -58,6 +62,9 @@ const getGroups = async (req, res) => {
             orderBy = { createdAt: 'desc' };
             break;
     }
+
+    // orderBy 확인
+    console.log('OrderBy:', orderBy);
 
     try {
         const [totalItemCount, data] = await Promise.all([
@@ -97,35 +104,46 @@ const getGroups = async (req, res) => {
     }
 };
 
+
 // 그룹 수정
 const updateGroup = async (req, res) => {
     const { groupId } = req.params;
     const { name, password, imageUrl, isPublic, introduction } = req.body;
 
-    if (!name || !imageUrl || typeof isPublic !== 'boolean' || !introduction) {
-        return res.status(400).json({ message: "잘못된 요청입니다" });
+    // 필수 값 검증
+    if (!name || !imageUrl || typeof isPublic !== 'boolean' || !introduction || !password) {
+        return res.status(400).json({ message: "잘못된 요청입니다. 모든 필드를 입력하세요." });
     }
 
     try {
+        // groupId를 정수로 변환하고 유효성 검사
+        const parsedGroupId = parseInt(groupId, 10);
+        if (isNaN(parsedGroupId)) {
+            return res.status(400).json({ message: "유효하지 않은 그룹 ID입니다." });
+        }
+
+        // 그룹 찾기
         const group = await prisma.group.findUnique({
-            where: { id: parseInt(groupId) },
+            where: { id: parsedGroupId },
         });
 
         if (!group) {
-            return res.status(404).json({ message: "존재하지 않습니다" });
+            return res.status(404).json({ message: "그룹이 존재하지 않습니다." });
         }
 
+        // 비밀번호 검증
         const isPasswordValid = await bcrypt.compare(password, group.password);
         console.log("Stored Password:", group.password);  // 디버깅 로그 추가
         console.log("Input Password:", password);         // 디버깅 로그 추가
         console.log("Password Valid:", isPasswordValid);  // 디버깅 로그 추가
 
         if (!isPasswordValid) {
-            return res.status(403).json({ message: "비밀번호가 틀렸습니다" });
+            return res.status(403).json({ message: "비밀번호가 틀렸습니다." });
         }
 
+        // 그룹 업데이트
         const updatedGroup = await prisma.group.update({
-            where: { id: parseInt(groupId) },
+            where: { id: parsedGroupId },
             data: {
                 name,
                 imageUrl,
@@ -137,55 +155,55 @@ const updateGroup = async (req, res) => {
         res.status(200).json(updatedGroup);
     } catch (error) {
         console.error('Error updating group:', error);
-        res.status(500).json({ message: '서버 오류입니다' });
+        res.status(500).json({ message: '서버 오류입니다.' });
     }
-  
 };
 
-//그룹 삭제 
+// 그룹 삭제
 const deleteGroup = async (req, res) => {
     const { groupId } = req.params;
     const { password } = req.body;
 
+    // 비밀번호가 없을 경우
     if (!password) {
         return res.status(400).json({ message: '비밀번호를 제공해 주세요' });
     }
 
     try {
+        // groupId를 정수로 변환하고 유효성 검사
+        const parsedGroupId = parseInt(groupId, 10);
+        if (isNaN(parsedGroupId)) {
+            return res.status(400).json({ message: "유효하지 않은 그룹 ID입니다." });
+        }
+
+        // 그룹 찾기
         const group = await prisma.group.findUnique({
-            where: { id: parseInt(groupId) },
+            where: { id: parsedGroupId },
         });
 
         if (!group) {
             console.log("그룹을 찾을 수 없습니다.");
-            return res.status(404).json({ message: "존재하지 않습니다" });
+            return res.status(404).json({ message: "존재하지 않는 그룹입니다." });
         }
-
-        // 디버깅 로그
-        console.log("Stored Password Hash:", group.password);  // 저장된 해시된 비밀번호 확인
-        console.log("Input Password:", password);  // 입력된 비밀번호 확인
 
         // 비밀번호 비교
         const isPasswordValid = await bcrypt.compare(password, group.password);
 
-        // 비교 결과 확인
         if (!isPasswordValid) {
             console.log("비밀번호가 일치하지 않습니다.");
-            console.log("비교된 비밀번호:", password);
-            console.log("저장된 해시 비밀번호:", group.password);
-            return res.status(403).json({ message: "비밀번호가 틀렸습니다" });
+            return res.status(403).json({ message: "비밀번호가 틀렸습니다." });
         }
 
         // 그룹 삭제
         await prisma.group.delete({
-            where: { id: parseInt(groupId) },
+            where: { id: parsedGroupId },
         });
 
         console.log("그룹 삭제 성공");
-        res.status(200).json({ message: "그룹 삭제 성공" });
+        res.status(200).json({ message: "그룹이 성공적으로 삭제되었습니다." });
     } catch (error) {
-        console.error('Error deleting group:', error);
-        res.status(500).json({ message: '서버 오류입니다' });
+        console.error('그룹 삭제 중 오류 발생:', error);
+        res.status(500).json({ message: '서버 오류입니다.' });
     }
 };
 

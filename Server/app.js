@@ -1,6 +1,16 @@
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 const app = express();
+
+
+// CORS 설정 - 특정 도메인 허용
+app.use(cors({
+  origin: 'http://localhost:3000', // 프론트엔드 도메인 (React 개발 서버)
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // 허용할 메서드들
+  credentials: true, // 쿠키 등을 허용할 경우 설정
+}));
+
 
 const groupRoutes = require('./routes/groupRoutes');
 const postRoutes = require('./routes/postRoutes');

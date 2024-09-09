@@ -46,10 +46,12 @@ function CreateGroupPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("그룹 생성 요청 시작");
 
     try {
       // 이미지 업로드 먼저 처리
       const imageUrl = imageFile ? await uploadImage() : "";
+      console.log("이미지 업로드 성공:", imageUrl);
 
       const requestBody = {
         name,
@@ -60,11 +62,14 @@ function CreateGroupPage() {
       };
 
       const response = await axios.post("/api/groups", requestBody);
+      console.log("그룹 생성 API 응답:", response);
 
       if (response.status === 201) {
         setShowSuccessModal(true);
+        console.log("그룹 생성 성공");
       } else {
         setShowErrorModal(true);
+        console.error("그룹 생성 실패:", response);
       }
     } catch (error) {
       console.error("그룹 생성 중 에러 발생:", error);

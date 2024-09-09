@@ -2,9 +2,8 @@ import React from "react";
 import "./MemoryNav.css";
 import { ReactComponent as SearchIcon } from "../assets/icon=search.svg";
 import { useNavigate } from "react-router-dom";
-const MemoryNav = ({ viewPrivate, onToggleView, onSortChange }) => {
+const MemoryNav = ({ groupId, viewPrivate, onToggleView, onSortChange }) => {
   const navigate = useNavigate();
-
   const handleButtonClick = (view) => {
     onToggleView(view === "private");
   };
@@ -13,8 +12,15 @@ const MemoryNav = ({ viewPrivate, onToggleView, onSortChange }) => {
     onSortChange(event.target.value);
   };
   const handleUploadClick = () => {
-    navigate("/upload-memory");
+    if (groupId) {
+      console.log("Navigating to upload-memory with groupId:", groupId); // 로그 추가
+      navigate(`/groups/${groupId}/upload-memory`);
+    } else {
+      console.log("No groupId provided");
+      alert("그룹 ID가 없습니다.");
+    }
   };
+
   return (
     <div className="memory-header-container">
       <div className="memory-nav-header">

@@ -1,6 +1,6 @@
 // cronJobs.js
 const cron = require('node-cron');
-const { checkBadgesForAllGroups } = require('./services/badgeService'); // badgeService 파일의 경로에 맞게 수정
+const { checkBadgesForAllGroups } = require('../services/badgeService'); // badgeService 파일의 경로에 맞게 수정
 
 // 매 10초마다 작업을 실행
 cron.schedule('*/10 * * * * *', async () => {

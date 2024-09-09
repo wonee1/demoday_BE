@@ -6,6 +6,16 @@ const bcrypt = require('bcrypt');
 //게시글 등록 
 const createPost = async (req, res) => {
     const { groupId } = req.params;
+
+    // groupId가 숫자인지 확인하고 변환
+    const parsedGroupId = parseInt(groupId, 10);
+    
+    // groupId가 NaN이면 에러 반환
+    if (isNaN(parsedGroupId)) {
+        console.error('Invalid groupId:', groupId); // 오류 로그 추가
+        return res.status(400).json({ error: '올바르지 않은 그룹 ID입니다.' });
+    }
+
     const {
         nickname,
         title,
@@ -21,22 +31,25 @@ const createPost = async (req, res) => {
 
     // 요청 본문 유효성 검사
     if (!nickname || !title || !content || !postPassword || !groupPassword || !imageUrl || !moment) {
+        console.log("Invalid request body:", req.body); // 본문 데이터 출력
         return res.status(400).json({ message: "잘못된 요청입니다" });
     }
 
     try {
         // 그룹 존재 확인 및 비밀번호 검증
         const group = await prisma.group.findUnique({
-            where: { id: parseInt(groupId) },
+            where: { id: parsedGroupId }, // groupId를 정수로 변환 후 사용
         });
 
         if (!group) {
+            console.log("Group not found:", groupId);
             return res.status(404).json({ message: "그룹이 존재하지 않습니다" });
         }
 
         const isGroupPasswordValid = await bcrypt.compare(groupPassword, group.password);
 
         if (!isGroupPasswordValid) {
+            console.log("Invalid group password for groupId:", groupId);
             return res.status(403).json({ message: "그룹 비밀번호가 틀렸습니다" });
         }
 
@@ -46,13 +59,13 @@ const createPost = async (req, res) => {
         // 게시글 생성
         const newPost = await prisma.post.create({
             data: {
-                groupId: parseInt(groupId),
+                groupId: parsedGroupId, // 변환된 groupId 사용
                 nickname,
                 title,
                 content,
                 password: hashedPostPassword,
                 imageUrl,
-                tags: tags,  // 배열로 저장
+                tags: tags || [], // 태그가 배열로 들어오지 않을 경우 빈 배열로 처리
                 location,
                 moment: new Date(moment),  // 문자열 날짜를 Date 객체로 변환
                 isPublic,
@@ -60,9 +73,8 @@ const createPost = async (req, res) => {
                 commentCount: 0,
             }
         });
-   
-        // 배지 조건 확인
-       
+
+        console.log("New post created:", newPost);
 
         // 성공적으로 생성된 게시글 반환
         res.status(200).json(newPost);

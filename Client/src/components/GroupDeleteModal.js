@@ -5,6 +5,9 @@ import "./GroupDeleteModal.css";
 const GroupDeleteModal = ({ isOpen, onClose, onDelete, groupId }) => {
   const [password, setPassword] = useState("");
 
+  // groupId 디버깅 로그 추가
+  console.log("Received groupId in GroupDeleteModal:", groupId);
+
   if (!isOpen) return null;
 
   const handleDelete = async () => {
@@ -18,7 +21,7 @@ const GroupDeleteModal = ({ isOpen, onClose, onDelete, groupId }) => {
         // 삭제 성공 처리
         console.log("그룹 삭제 성공");
         onDelete(); // 삭제 후 추가 동작 수행 (예: 페이지 리다이렉트 등)
-        onClose(); // 모달 창 닫기
+        onClose();  // 모달 닫기
       }
     } catch (error) {
       // 삭제 실패 처리
@@ -27,11 +30,11 @@ const GroupDeleteModal = ({ isOpen, onClose, onDelete, groupId }) => {
         error.response?.data?.message || error.message
       );
 
-      if (error.response.status === 403) {
+      if (error.response?.status === 403) {
         alert("비밀번호가 틀렸습니다.");
-      } else if (error.response.status === 400) {
+      } else if (error.response?.status === 400) {
         alert("잘못된 요청입니다.");
-      } else if (error.response.status === 404) {
+      } else if (error.response?.status === 404) {
         alert("그룹이 존재하지 않습니다.");
       } else {
         alert("삭제에 실패했습니다. 다시 시도해주세요.");
