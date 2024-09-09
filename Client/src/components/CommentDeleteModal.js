@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./CommentDeleteModal.css";
 
-const CommentDeleteModal = ({ isOpen, onClose, onDelete, commentId }) => {
+const CommentDeleteModal = ({ isOpen, onClose, commentId }) => {
   const [password, setPassword] = useState("");
 
   const handlePasswordChange = (e) => {
@@ -68,47 +68,3 @@ const CommentDeleteModal = ({ isOpen, onClose, onDelete, commentId }) => {
 
 export default CommentDeleteModal;
 
-// import React, { useState } from "react";
-// import "./CommentDeleteModal.css";
-
-// const CommentDeleteModal = ({ isOpen, onClose, onDelete }) => {
-//   const [password, setPassword] = useState("");
-
-//   const handlePasswordChange = (e) => {
-//     setPassword(e.target.value);
-//   };
-
-//   const handleDelete = () => {
-//     onDelete(password);
-//     setPassword(""); // 입력된 비밀번호 초기화
-//   };
-
-//   if (!isOpen) return null;
-
-//   return (
-//     <div className="modal-overlay">
-//       <div className="modal-content-delete">
-//         <button className="close-button" onClick={onClose}>
-//           &times;
-//         </button>
-//         <h2 className="delete-page-title">댓글 삭제</h2>
-//         <div className="delete-form-group">
-//           <label className="delete-label">삭제 권한 인증</label>
-//           <input
-//             type="password"
-//             value={password}
-//             onChange={handlePasswordChange}
-//             placeholder="댓글 비밀번호를 입력해 주세요"
-//             className="delete-password-input"
-//             required
-//           />
-//         </div>
-//         <button onClick={handleDelete} className="delete-submit-button">
-//           삭제하기
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default CommentDeleteModal;

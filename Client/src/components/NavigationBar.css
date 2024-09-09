@@ -16,13 +16,19 @@
 }
 
 .nav-button {
-  padding: 5px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
   border: none;
   border-radius: 20px;
   background-color: #f8f9fa;
   color: #282828;
   font-size: 1em;
+  line-height: 1; /* 텍스트 줄 간격을 설정하여 높이 조정 */
   cursor: pointer;
+  height: 40px; /* 고정된 높이 추가 */
+  min-width: 80px; /* 고정된 너비 추가 */
 }
 
 .nav-button.active {

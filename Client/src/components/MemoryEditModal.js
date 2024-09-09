@@ -2,28 +2,30 @@ import React, { useState, useEffect } from "react";
 import axios from "axios"; // axios 추가
 import "./MemoryEditModal.css";
 
-const MemoryEditModal = ({ memoryDetails, isOpen, onClose, onSubmit }) => {
-  const [nickname, setNickname] = useState(memoryDetails.nickname || "");
-  const [title, setTitle] = useState(memoryDetails.title || "");
-  const [content, setContent] = useState(memoryDetails.content || "");
+const MemoryEditModal = ({ isOpen, onClose, onSubmit, postId, memoryDetails }) => {
+  // 초기 상태 설정 시 memoryDetails가 undefined일 경우에도 빈 문자열로 처리
+  const [nickname, setNickname] = useState(memoryDetails?.nickname || "");
+  const [title, setTitle] = useState(memoryDetails?.title || "");
+  const [content, setContent] = useState(memoryDetails?.content || "");
   const [memoryPassword, setMemoryPassword] = useState("");
   const [image, setImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState(memoryDetails.imageUrl || "");
-  const [tags, setTags] = useState(memoryDetails.tags || []);
+  const [imageUrl, setImageUrl] = useState(memoryDetails?.imageUrl || "");
+  const [tags, setTags] = useState(memoryDetails?.tags || []);
   const [tagInput, setTagInput] = useState("");
-  const [location, setLocation] = useState(memoryDetails.location || "");
-  const [moment, setMoment] = useState(memoryDetails.moment || "");
-  const [isPublic, setIsPublic] = useState(memoryDetails.isPublic || true);
+  const [location, setLocation] = useState(memoryDetails?.location || "");
+  const [moment, setMoment] = useState(memoryDetails?.moment || "");
+  const [isPublic, setIsPublic] = useState(memoryDetails?.isPublic || true);
 
   useEffect(() => {
+    // memoryDetails가 변경되면 상태값을 다시 설정
     if (memoryDetails) {
-      setNickname(memoryDetails.nickname);
-      setTitle(memoryDetails.title);
-      setContent(memoryDetails.content);
+      setNickname(memoryDetails.nickname || "");
+      setTitle(memoryDetails.title || "");
+      setContent(memoryDetails.content || "");
       setTags(memoryDetails.tags || []);
-      setLocation(memoryDetails.location);
-      setMoment(memoryDetails.moment);
-      setIsPublic(memoryDetails.isPublic);
+      setLocation(memoryDetails.location || "");
+      setMoment(memoryDetails.moment || "");
+      setIsPublic(memoryDetails.isPublic || true);
     }
   }, [memoryDetails]);
 
@@ -91,7 +93,7 @@ const MemoryEditModal = ({ memoryDetails, isOpen, onClose, onSubmit }) => {
 
       // 서버에 게시글 수정 요청
       const response = await axios.put(
-        `/api/posts/${memoryDetails.id}`,
+        `/api/posts/${postId}`, // postId를 직접 사용
         updatedMemory
       );
 
@@ -106,7 +108,7 @@ const MemoryEditModal = ({ memoryDetails, isOpen, onClose, onSubmit }) => {
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) return null; // 모달이 열리지 않았거나 데이터가 없을 때 렌더링하지 않음
 
   return (
     <div className="modal-overlay">
@@ -144,7 +146,7 @@ const MemoryEditModal = ({ memoryDetails, isOpen, onClose, onSubmit }) => {
               <div className="edit-image-upload">
                 <input
                   type="text"
-                  value={image ? image.name : memoryDetails.imageUrl}
+                  value={image ? image.name : memoryDetails?.imageUrl} // 옵셔널 체이닝
                   readOnly
                   className="edit-file-input-display"
                 />

@@ -10,11 +10,10 @@ import MemoryNav from "../components/MemoryNav";
 import img2 from "../assets/image=img2.svg";
 import LikeIcon from "../assets/icon=flower.svg";
 
-
 const PublicDetailPage = () => {
   const { groupId } = useParams(); // URL에서 그룹 ID 가져옴
   const [groupDetail, setGroupDetail] = useState(null);
-  const [memories, setMemories] = useState([]);
+  const [posts, setPosts] = useState([]); // Changed from memories to posts
   const [isGroupEditModalOpen, setIsGroupEditModalOpen] = useState(false);
   const [isGroupDeleteModalOpen, setIsGroupDeleteModalOpen] = useState(false);
   const [isPublic, setIsPublic] = useState(true);
@@ -22,12 +21,12 @@ const PublicDetailPage = () => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
 
-  // groupId가 바뀔 때마다 groupDetail과 memories를 새로 fetch
+  // groupId가 바뀔 때마다 groupDetail과 posts를 새로 fetch
   useEffect(() => {
     if (groupId) {
       console.log("Fetching details for group ID:", groupId); // 디버깅용 로그 추가
       fetchGroupDetail();
-      fetchMemories();
+      fetchPosts(); // Updated to fetchPosts
     }
   }, [groupId, isPublic, sortBy, page]); // groupId가 바뀔 때마다 실행되도록 의존성 추가
 
@@ -44,7 +43,8 @@ const PublicDetailPage = () => {
     }
   };
 
-  const fetchMemories = async () => {
+  const fetchPosts = async () => {
+    // Changed from fetchMemories to fetchPosts
     try {
       const response = await axios.get(`/api/groups/${groupId}/posts`, {
         params: {
@@ -55,8 +55,8 @@ const PublicDetailPage = () => {
         },
       });
       if (response.status === 200) {
-        setMemories(response.data.data);
-        console.log("Fetched memories:", response.data.data); // API 응답 로그
+        setPosts(response.data.data); // Changed from setMemories to setPosts
+        console.log("Fetched posts:", response.data.data); // API 응답 로그
       }
     } catch (error) {
       console.error("게시글 목록 조회 중 오류 발생:", error);
@@ -139,8 +139,17 @@ const PublicDetailPage = () => {
           </div>
         </div>
       </div>
-      <MemoryNav groupId={groupId} onToggleView={setIsPublic} onSortChange={setSortBy} />
-      <PublicMemory isPublic={isPublic} sortBy={sortBy} memories={memories} />
+      <MemoryNav
+        groupId={groupId}
+        onToggleView={setIsPublic}
+        onSortChange={setSortBy}
+      />
+      <PublicMemory
+        groupId={groupId}
+        isPublic={isPublic}
+        sortBy={sortBy}
+        posts={posts} // Changed from memories to posts
+      />
       <GroupEditModal
         isOpen={isGroupEditModalOpen}
         onClose={handleCloseModal}

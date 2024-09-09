@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios"; // axios 임포트 추가
 import "./MemoryDeleteModal.css";
 
-const MemoryDeleteModal = ({ isOpen, onClose, onDelete, postId }) => {
+const MemoryDeleteModal = ({ isOpen, onClose, onDelete = () => {}, postId }) => {
   const [password, setPassword] = useState("");
 
   if (!isOpen) return null;

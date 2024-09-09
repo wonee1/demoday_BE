@@ -1,22 +1,21 @@
 import React, { useState } from "react";
-import "./CommentModal.css"; // CSS remains unchanged
 
 const CommentModal = ({ isOpen, onClose, onSubmit, postId }) => {
   const [nickname, setNickname] = useState("");
   const [comment, setComment] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); // State to handle error messages
+
+  // postId 디버깅 로그 추가
+  console.log("Post ID in CommentModal:", postId);
 
   const handleSubmit = async () => {
     try {
-      // Construct the request body for the API
       const requestBody = {
-        nickname: nickname,
+        nickname,
         content: comment,
-        password: password,
+        password,
       };
 
-      // Send the POST request to the API
       const response = await fetch(`/api/posts/${postId}/comments`, {
         method: "POST",
         headers: {
@@ -27,148 +26,53 @@ const CommentModal = ({ isOpen, onClose, onSubmit, postId }) => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        setErrorMessage(errorData.message || "Something went wrong!");
+        console.error("Error submitting comment:", errorData);
         return;
       }
 
-      // Parse the successful response data
       const responseData = await response.json();
-      console.log("Comment submitted successfully:", responseData);
-
-      // Call the onSubmit function passed as a prop (if needed)
       onSubmit(responseData);
-
-      // Close the modal after successful submission
       onClose();
     } catch (error) {
       console.error("Error submitting comment:", error);
-      setErrorMessage("An error occurred. Please try again.");
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay-comment">
-      <div className="modal-content-comment">
-        <button className="close-button" onClick={onClose}>
-          &times;
-        </button>
-        <h2 className="comment-title">댓글 등록</h2>
-        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-        >
-          <div className="form-group-comment">
-            <label>닉네임</label>
-            <input
-              type="text"
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-              placeholder="닉네임을 입력해 주세요"
-              required
-            />
-          </div>
-          <div className="form-group-comment">
-            <label>댓글</label>
-            <textarea
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              placeholder="댓글을 입력해 주세요"
-              required
-            />
-          </div>
-          <div className="form-group-comment">
-            <label>비밀번호 생성</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="댓글 비밀번호를 생성해 주세요"
-              required
-            />
-          </div>
-          <button type="submit" className="submit-button-comment">
-            등록하기
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <h2>댓글 작성</h2>
+        <form onSubmit={(e) => e.preventDefault()}>
+          <input
+            type="text"
+            placeholder="닉네임"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+            required
+          />
+          <textarea
+            placeholder="댓글 내용을 입력하세요"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            required
+          ></textarea>
+          <input
+            type="password"
+            placeholder="비밀번호"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit" onClick={handleSubmit}>
+            댓글 등록
           </button>
         </form>
+        <button onClick={onClose}>닫기</button>
       </div>
     </div>
   );
 };
 
 export default CommentModal;
-
-// // src/components/CommentModal.js
-
-// import React, { useState } from "react";
-// import "./CommentModal.css"; // Make sure to create this CSS file
-
-// const CommentModal = ({ isOpen, onClose, onSubmit }) => {
-//   const [nickname, setNickname] = useState("");
-//   const [comment, setComment] = useState("");
-//   const [password, setPassword] = useState("");
-
-//   const handleSubmit = () => {
-//     // Handle the submission logic here
-//     onSubmit({ nickname, comment, password });
-//     onClose(); // Close the modal after submission
-//   };
-
-//   if (!isOpen) return null;
-
-//   return (
-//     <div className="modal-overlay-comment">
-//       <div className="modal-content-comment">
-//         <button className="close-button" onClick={onClose}>
-//           &times;
-//         </button>
-//         <h2 className="comment-title">댓글 등록</h2>
-//         <form
-//           onSubmit={(e) => {
-//             e.preventDefault();
-//             handleSubmit();
-//           }}
-//         >
-//           <div className="form-group-comment">
-//             <label>닉네임</label>
-//             <input
-//               type="text"
-//               value={nickname}
-//               onChange={(e) => setNickname(e.target.value)}
-//               placeholder="닉네임을 입력해 주세요"
-//               required
-//             />
-//           </div>
-//           <div className="form-group-comment">
-//             <label>댓글</label>
-//             <textarea
-//               value={comment}
-//               onChange={(e) => setComment(e.target.value)}
-//               placeholder="댓글을 입력해 주세요"
-//               required
-//             />
-//           </div>
-//           <div className="form-group-comment">
-//             <label>비밀번호 생성</label>
-//             <input
-//               type="password"
-//               value={password}
-//               onChange={(e) => setPassword(e.target.value)}
-//               placeholder="댓글 비밀번호를 생성해 주세요"
-//               required
-//             />
-//           </div>
-//           <button type="submit" className="submit-button-comment">
-//             등록하기
-//           </button>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default CommentModal;
