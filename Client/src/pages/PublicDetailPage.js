@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // useParams 훅으로 URL에서 groupId를 가져옴
+import { useParams, useNavigate } from "react-router-dom"; // useNavigate 훅 추가
 import axios from "axios";
 import "./PublicDetailPage.css";
 import Header from "../components/Header";
@@ -12,6 +12,7 @@ import LikeIcon from "../assets/icon=flower.svg";
 
 const PublicDetailPage = () => {
   const { groupId } = useParams(); // URL에서 그룹 ID 가져옴
+  const navigate = useNavigate(); // 페이지 리다이렉트를 위한 useNavigate 훅
   const [groupDetail, setGroupDetail] = useState(null);
   const [posts, setPosts] = useState([]); // Changed from memories to posts
   const [isGroupEditModalOpen, setIsGroupEditModalOpen] = useState(false);
@@ -21,21 +22,35 @@ const PublicDetailPage = () => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
 
+  // 그룹 삭제 후 처리 함수
+  const handleDeleteGroup = async () => {
+    try {
+      const response = await axios.delete(`/api/groups/${groupId}`);
+      if (response.status === 200) {
+        alert("그룹이 성공적으로 삭제되었습니다.");
+        navigate("/groups"); // 그룹 목록 페이지로 리다이렉트
+      }
+    } catch (error) {
+      console.error("그룹 삭제 중 오류 발생:", error);
+      alert("그룹 삭제 중 오류가 발생했습니다.");
+    }
+  };
+
   // groupId가 바뀔 때마다 groupDetail과 posts를 새로 fetch
   useEffect(() => {
     if (groupId) {
-      console.log("Fetching details for group ID:", groupId); // 디버깅용 로그 추가
+      console.log("Fetching details for group ID:", groupId);
       fetchGroupDetail();
-      fetchPosts(); // Updated to fetchPosts
+      fetchPosts();
     }
-  }, [groupId, isPublic, sortBy, page]); // groupId가 바뀔 때마다 실행되도록 의존성 추가
+  }, [groupId, isPublic, sortBy, page]);
 
   const fetchGroupDetail = async () => {
     try {
       const response = await axios.get(`/api/groups/${groupId}`);
       if (response.status === 200) {
         setGroupDetail(response.data);
-        console.log("Fetched group details:", response.data); // API 응답 로그
+        console.log("Fetched group details:", response.data);
       }
     } catch (error) {
       console.error("그룹 상세 정보 조회 중 오류 발생:", error);
@@ -44,7 +59,6 @@ const PublicDetailPage = () => {
   };
 
   const fetchPosts = async () => {
-    // Changed from fetchMemories to fetchPosts
     try {
       const response = await axios.get(`/api/groups/${groupId}/posts`, {
         params: {
@@ -55,8 +69,8 @@ const PublicDetailPage = () => {
         },
       });
       if (response.status === 200) {
-        setPosts(response.data.data); // Changed from setMemories to setPosts
-        console.log("Fetched posts:", response.data.data); // API 응답 로그
+        setPosts(response.data.data);
+        console.log("Fetched posts:", response.data.data);
       }
     } catch (error) {
       console.error("게시글 목록 조회 중 오류 발생:", error);
@@ -69,7 +83,7 @@ const PublicDetailPage = () => {
       const response = await axios.post(`/api/groups/${groupId}/like`);
       if (response.status === 200) {
         alert("공감을 보냈습니다!");
-        fetchGroupDetail(); // 공감 후 상세 정보 갱신
+        fetchGroupDetail();
       }
     } catch (error) {
       console.error("공감 보내기 중 오류 발생:", error);
@@ -88,6 +102,13 @@ const PublicDetailPage = () => {
   const handleCloseModal = () => {
     setIsGroupEditModalOpen(false);
     setIsGroupDeleteModalOpen(false);
+  };
+
+  // 그룹 정보 수정 후 처리할 함수
+  const handleEditGroupSubmit = (updatedDetails) => {
+    setGroupDetail(updatedDetails); // 수정된 정보로 상태 업데이트
+    alert('그룹 정보가 성공적으로 수정되었습니다.');
+    handleCloseModal(); // 모달 닫기
   };
 
   if (!groupDetail) return <div>Loading...</div>;
@@ -154,10 +175,12 @@ const PublicDetailPage = () => {
         isOpen={isGroupEditModalOpen}
         onClose={handleCloseModal}
         groupDetails={groupDetail}
+        onSubmit={handleEditGroupSubmit} // onSubmit 함수 전달
       />
       <GroupDeleteModal
         isOpen={isGroupDeleteModalOpen}
         onClose={handleCloseModal}
+        onDelete={handleDeleteGroup} // 그룹 삭제 후 처리할 함수 전달
         groupId={groupId}
       />
     </div>
