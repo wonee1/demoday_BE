@@ -32,12 +32,12 @@ require('./cronJobs'); // cronJobs.js 파일 실행
 
 
 // React의 빌드된 정적 파일을 제공
-app.use(express.static(path.join(__dirname, '../client/build')));
+//app.use(express.static(path.join(__dirname, '../client/build')));
 
 // 모든 경로에 대해 React의 index.html을 반환 (React 라우팅 처리)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-});
+//app.get('*', (req, res) => {
+//  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+//});
 
 
 const PORT = process.env.PORT || 3000;
